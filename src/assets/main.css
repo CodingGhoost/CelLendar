@@ -1,0 +1,13 @@
+/* 引入 Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* 全局字体 */
+:root {
+  --main-font: 'Inter', sans-serif;
+  --secondary-font: 'Poppins', sans-serif;
+}
+
+/* 设置全局字体 */
+body {
+  font-family: var(--main-font);
+}
