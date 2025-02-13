@@ -92,8 +92,8 @@
     </div>
 
     <div class="sidebar-content">
-      <el-menu>
-        <el-menu-item index="1">Home</el-menu-item>
+      <el-menu :default-active="$route.path">
+        <el-menu-item index="/" :route="'/'">Home</el-menu-item>
         <el-menu-item index="2">Archive</el-menu-item>
         <el-menu-item index="3">Account</el-menu-item>
         <el-menu-item index="4">Settings</el-menu-item>
