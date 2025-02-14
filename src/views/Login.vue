@@ -75,7 +75,7 @@ const rules = {
             <!-- 注册表单 -->
             <el-form ref="form" size="large" autocomplete="off" v-if="isRegister" :model="registerData" :rules="rules">
                 <el-form-item>
-                    <h1>Register</h1>
+                    <h1>Sign Up</h1>
                 </el-form-item>
                 <el-form-item prop="username">
                     <el-input :prefix-icon="User" placeholder="Username" v-model="registerData.username"></el-input>
@@ -89,7 +89,7 @@ const rules = {
                 <!-- 注册按钮 -->
                 <el-form-item class="button-item">
                     <el-button class="button" type="primary" auto-insert-space @click = "register">
-                        Register
+                        Sign Up
                     </el-button>
                 </el-form-item>
                 <el-form-item class="flex">
@@ -121,7 +121,7 @@ const rules = {
                 </el-form-item>
                 <el-form-item class="flex">
                     <el-link type="info" :underline="false" @click="isRegister = true">
-                        New Account
+                        Sign Up
                     </el-link>
                 </el-form-item>
 

@@ -1,8 +1,15 @@
 <script setup>
   import { ElButton, ElMenu, ElMenuItem, ElIcon} from "element-plus";
-  import { ref } from "vue";
+  import { ref, nextTick } from "vue";
 
   const year = ref(new Date().getFullYear());
+
+  const isEditing = ref(false);
+  const activeCell = ref('');
+  const selectedDay = ref('');
+  const selectedColor = ref('');
+  const note = ref('');
+
 
   const getWeekday = (year, month, day) => {
     const date = new Date(year, month, day); 
@@ -66,57 +73,86 @@
       sidebarVisible.value = !sidebarVisible.value;
   };
 
-  const editDay = (month, day) => {
-    alert(`编辑 ${month} ${day} 的日程`);
-  };
+  const editDay = (day, event) => {
+    isEditing.value = false;
+    
 
+    setTimeout(() => {
+      activeCell.value = event.target;
+      isEditing.value = true;
+    }, 200);
+    
+    // alert(`编辑 ${month} ${day} 的日程`);
+  };
+  const saveNote = () => {
+    // 保存笔记的逻辑
+  }
 </script>
 
 <template>
 
-<div class="calendar-page">
+  <div class="calendar-page">
 
-  <!-- 侧边栏 -->
-  <div class="sidebar" :class="{ 'sidebar-open': sidebarVisible }">
-    <button class="toggle-button" @click="toggleSidebar">
-      <span v-if="!sidebarVisible">
-          <el-icon class="toggle-arrow"><ArrowRightBold /></el-icon>
-      </span>
-      <span v-else>
-        <el-icon class="toggle-arrow"><ArrowLeftBold /></el-icon>
-      </span>
-    </button>
-    
-    <div class="user-profile">
-      <img class="avatar" src="@/assets/default-avatar.png" alt="User Avatar" />
-    </div>
+    <!-- 侧边栏 -->
+    <div class="sidebar" :class="{ 'sidebar-open': sidebarVisible }">
+      <button class="toggle-button" @click="toggleSidebar">
+        <span v-if="!sidebarVisible">
+            <el-icon class="toggle-arrow"><ArrowRightBold /></el-icon>
+        </span>
+        <span v-else>
+          <el-icon class="toggle-arrow"><ArrowLeftBold /></el-icon>
+        </span>
+      </button>
+      
+      <div class="user-profile">
+        <img class="avatar" src="@/assets/default-avatar.png" alt="User Avatar" />
+      </div>
 
-    <div class="sidebar-content">
-      <el-menu :default-active="$route.path">
-        <el-menu-item index="/" :route="'/'">Home</el-menu-item>
-        <el-menu-item index="2">Archive</el-menu-item>
-        <el-menu-item index="3">Account</el-menu-item>
-        <el-menu-item index="4">Settings</el-menu-item>
-      </el-menu>
-    </div>
-  </div>
-
-  <div class="year-header">
-      <h1 class="year-text">{{ year }}</h1>
-  </div>
-  <div class="calendar-container">
-    <div class="months-wrapper">
-      <div v-for="month in months" :key="month.name" class="month-column">
-        <div class="month-header">{{ month.name }}</div>
-        <div v-for="day in month.days" :key="day.day" class="day-cell" @click="editDay(month.name, day.day)">
-          <div class="day-number">{{ day.day }}</div>
-          <div class="weekday-text">{{ day.weekday }}</div>
-        </div>
+      <div class="sidebar-content">
+        <el-menu router :default-active="$route.path">
+          <el-menu-item index="/" :route="'/'">Home</el-menu-item>
+          <el-menu-item index="2">Archive</el-menu-item>
+          <el-menu-item index="3">Account</el-menu-item>
+          <el-menu-item index="4">Settings</el-menu-item>
+        </el-menu>
       </div>
     </div>
+
+    <div class="year-header">
+        <h1 class="year-text">{{ year }}</h1>
+    </div>
+
+    <div class="calendar-container">
+      <div class="months-wrapper">
+        <div v-for="month in months" :key="month.name" class="month-column">
+          <div class="month-header">{{ month.name }}</div>
+          <div v-for="day in month.days" :key="day.day" class="day-cell" ref="cellRef" @click="editDay(day.day, $event)">
+            <div class="day-number">{{ day.day }}</div>
+            <div class="weekday-text">{{ day.weekday }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <el-popover 
+        v-model:visible="isEditing" 
+        trigger="manual"
+        :virtual-ref="activeCell" 
+        virtual-triggering
+        placement="bottom"
+        width="500"
+      >
+        <div class="editor">
+          <textarea v-model="note" placeholder="Write a note..." />
+          <el-color-picker v-model="selectedColor"/>
+          <el-button @click="saveNote">Save</el-button>
+        </div>
+      </el-popover>
+    </div>
+      
+    </div>
   </div>
 
-</div>
 </template>
 
 <style scoped>
@@ -304,6 +340,8 @@
   background-color: #f0f0f0;
 }
 
+
+
 .day-number {
   font-size: 20px;
   /* font-weight: bold; */
@@ -314,4 +352,11 @@
   /* margin-top: 1px; */
   /* font-weight: bold; */
 }
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 </style>
