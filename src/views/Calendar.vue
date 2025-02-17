@@ -1,6 +1,6 @@
 <script setup>
   import { ElButton, ElMenu, ElMenuItem, ElIcon} from "element-plus";
-  import { ref, nextTick } from "vue";
+  import { ref } from "vue";
 
   const year = ref(new Date().getFullYear());
 
@@ -74,8 +74,7 @@
   };
 
   const editDay = (day, event) => {
-    isEditing.value = false;
-    
+    // isEditing.value = false;
 
     setTimeout(() => {
       activeCell.value = event.target;
@@ -86,6 +85,8 @@
   };
   const saveNote = () => {
     // 保存笔记的逻辑
+    isEditing.value = false;
+    console.log(activeCell.value);
   }
 </script>
 
@@ -111,9 +112,9 @@
       <div class="sidebar-content">
         <el-menu router :default-active="$route.path">
           <el-menu-item index="/" :route="'/'">Home</el-menu-item>
-          <el-menu-item index="2">Archive</el-menu-item>
-          <el-menu-item index="3">Account</el-menu-item>
-          <el-menu-item index="4">Settings</el-menu-item>
+          <el-menu-item index="/archive" :route="'/archive'">Archive</el-menu-item>
+          <el-menu-item index="/account" :route="'/account'">Account</el-menu-item>
+          <el-menu-item index="/settings" :route="'/settings'">Settings</el-menu-item>
         </el-menu>
       </div>
     </div>
@@ -126,7 +127,7 @@
       <div class="months-wrapper">
         <div v-for="month in months" :key="month.name" class="month-column">
           <div class="month-header">{{ month.name }}</div>
-          <div v-for="day in month.days" :key="day.day" class="day-cell" ref="cellRef" @click="editDay(day.day, $event)">
+          <div v-for="day in month.days" :key="day.day" class="day-cell" @click="editDay(day.day, $event)">
             <div class="day-number">{{ day.day }}</div>
             <div class="weekday-text">{{ day.weekday }}</div>
           </div>
@@ -135,12 +136,12 @@
 
       <div>
         <el-popover 
-        v-model:visible="isEditing" 
+        :visible="isEditing" 
         trigger="manual"
         :virtual-ref="activeCell" 
         virtual-triggering
         placement="bottom"
-        width="500"
+        width="200"
       >
         <div class="editor">
           <textarea v-model="note" placeholder="Write a note..." />
