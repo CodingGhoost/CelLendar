@@ -1,93 +1,108 @@
 <script setup>
-  import { ElButton, ElMenu, ElMenuItem, ElIcon} from "element-plus";
-  import { ref } from "vue";
+import { ElButton, ElMenu, ElMenuItem, ElIcon} from "element-plus";
+import { ref } from "vue";
 
-  const year = ref(new Date().getFullYear());
+const year = ref(new Date().getFullYear());
 
-  const isEditing = ref(false);
-  const activeCell = ref('');
-  const selectedDay = ref('');
-  const selectedColor = ref('');
-  const note = ref('');
+const isEditing = ref(false);
+const activeCell = ref('');
+const selectedDay = ref('');
+const selectedColor = ref('');
+const note = ref('');
 
 
-  const getWeekday = (year, month, day) => {
-    const date = new Date(year, month, day); 
-    return date.toLocaleDateString("en-US", { weekday: "short" });
-  };
+const getWeekday = (year, month, day) => {
+  const date = new Date(year, month, day); 
+  return date.toLocaleDateString("en-US", { weekday: "short" });
+};
 
-  const months = ref([
-    { name: "Jan", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 0, i + 1) 
-    }))},
-    { name: "Feb", days: Array.from({ length: (year.value % 4 === 0 ? 29 : 28) }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 1, i + 1) 
-    }))},
-    { name: "Mar", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 2, i + 1) 
-    }))},
-    { name: "Apr", days: Array.from({ length: 30 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 3, i + 1) 
-    }))},
-    { name: "May", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 4, i + 1) 
-    }))},
-    { name: "Jun", days: Array.from({ length: 30 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 5, i + 1) 
-    }))},
-    { name: "Jul", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 6, i + 1) 
-    }))},
-    { name: "Aug", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 7, i + 1) 
-    }))},
-    { name: "Sep", days: Array.from({ length: 30 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 8, i + 1) 
-    }))},
-    { name: "Oct", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 9, i + 1) 
-    }))},
-    { name: "Nov", days: Array.from({ length: 30 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 10, i + 1) 
-    }))},
-    { name: "Dec", days: Array.from({ length: 31 }, (_, i) => ({ 
-      day: i + 1, 
-      weekday: getWeekday(year.value, 11, i + 1) 
-    }))}
-  ]);
+const months = ref([
+  { name: "Jan", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 0, i + 1) 
+  }))},
+  { name: "Feb", days: Array.from({ length: (year.value % 4 === 0 ? 29 : 28) }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 1, i + 1) 
+  }))},
+  { name: "Mar", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 2, i + 1) 
+  }))},
+  { name: "Apr", days: Array.from({ length: 30 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 3, i + 1) 
+  }))},
+  { name: "May", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 4, i + 1) 
+  }))},
+  { name: "Jun", days: Array.from({ length: 30 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 5, i + 1) 
+  }))},
+  { name: "Jul", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 6, i + 1) 
+  }))},
+  { name: "Aug", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 7, i + 1) 
+  }))},
+  { name: "Sep", days: Array.from({ length: 30 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 8, i + 1) 
+  }))},
+  { name: "Oct", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 9, i + 1) 
+  }))},
+  { name: "Nov", days: Array.from({ length: 30 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 10, i + 1) 
+  }))},
+  { name: "Dec", days: Array.from({ length: 31 }, (_, i) => ({ 
+    day: i + 1, 
+    weekday: getWeekday(year.value, 11, i + 1) 
+  }))}
+]);
 
-  const sidebarVisible = ref(false);
+const sidebarVisible = ref(false);
 
-  const toggleSidebar = () => {
-      sidebarVisible.value = !sidebarVisible.value;
-  };
+const toggleSidebar = () => {
+    sidebarVisible.value = !sidebarVisible.value;
+};
 
-  const editDay = (day, event) => {
-    // isEditing.value = false;
+const editDay = (day, event) => {
+  // 编辑指定日期的逻辑
+  let target = event.target;
 
-    setTimeout(() => {
-      activeCell.value = event.target;
-      isEditing.value = true;
-    }, 200);
-    
-    // alert(`编辑 ${month} ${day} 的日程`);
-  };
-  const saveNote = () => {
-    // 保存笔记的逻辑
-    isEditing.value = false;
-    console.log(activeCell.value);
+  // 如果点到的是 day-number 或 weekday-text，就找最近的 .day-cell
+  while (target && !target.classList.contains('day-cell')) {
+    target = target.parentElement;
   }
+
+  if (isEditing.value) {
+    isEditing.value = false;
+  }
+
+  activeCell.value = target;
+  selectedColor.value = activeCell.value.style.backgroundColor;
+  isEditing.value = true;
+};
+
+const saveEdit = () => {
+  // 保存笔记的逻辑
+  isEditing.value = false;
+  console.log(activeCell.value);
+  console.log(selectedColor.value);
+  activeCell.value.style.backgroundColor = selectedColor.value;
+
+  // 清除已有的信息
+  activeCell.value = '';
+  selectedColor.value = '';
+  note.value = '';
+}
 </script>
 
 <template>
@@ -127,7 +142,9 @@
       <div class="months-wrapper">
         <div v-for="month in months" :key="month.name" class="month-column">
           <div class="month-header">{{ month.name }}</div>
-          <div v-for="day in month.days" :key="day.day" class="day-cell" @click="editDay(day.day, $event)">
+          <div v-for="day in month.days" 
+              :key="day.day" class="day-cell" 
+              @click="editDay(day.day, $event)">
             <div class="day-number">{{ day.day }}</div>
             <div class="weekday-text">{{ day.weekday }}</div>
           </div>
@@ -146,7 +163,7 @@
         <div class="editor">
           <textarea v-model="note" placeholder="Write a note..." />
           <el-color-picker v-model="selectedColor"/>
-          <el-button @click="saveNote">Save</el-button>
+          <el-button @click="saveEdit">Save</el-button>
         </div>
       </el-popover>
     </div>
